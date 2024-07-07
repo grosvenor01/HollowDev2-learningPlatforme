@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+        }
+        
+        .question h2 {
+            color: #4CAF50;
+        }
+        
+        .answer {
+            margin-bottom: 10px;
+        }
+        
+        input[type=radio] {
+            margin-right: 10px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .result-container h2 {
+            color: #333;
+        }
+        
+        .result-container p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz</h1>
+        <form id="quiz-form">
+            <div class="question">
+                <h2>Question 1</h2>
+                <div class="answer">
+                    <input type="radio" id="q1-a1" name="q1" value="a1">
+                    <label for="q1-a1">Answer 1</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" id="q1-a2" name="q1" value="a2">
+                    <label for="q1-a2">Answer 2</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" id="q1-a3" name="q1" value="a3">
+                    <label for="q1-a3">Answer 3</label>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h2>Question 2</h2>
+                <div class="answer">
+                    <input type="radio" id="q2-a1" name="q2" value="a1">
+                    <label for="q2-a1">Answer 1</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" id="q2-a2" name="q2" value="a2">
+                    <label for="q2-a2">Answer 2</label>
+                </div>
+                <div class="answer">
+                    <input type="radio" id="q2-a3" name="q2" value="a3">
+                    <label for="q2-a3">Answer 3</label>
+                </div>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+        
+        <div class="result-container" style="display: none;">
+            <h2>Results</h2>
+            <p>Your score: <span id="score">0</span>/2</p>
+            <p id="feedback"></p>
+        </div>
+    </div>
+
+    <script>
+        // Add your JavaScript code here to handle quiz submission and result display
+        document.getElementById('quiz-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get the selected answers
+            var q1Answer = document.querySelector('input[name="q1"]:checked')?.value;
+            var q2Answer = document.querySelector('input[name="q2"]:checked')?.value;
+            
+            // Calculate the score
+            var score = 0;
+            if (q1Answer === 'a2') {
+                score++;
+            }
+            if (q2Answer === 'a3') {
+                score++;
+            }
+            
+            // Display the results
+            document.getElementById('score').textContent = score;
+            var feedbackElement = document.getElementById('feedback');
+            if (score === 2) {
+                feedbackElement.textContent = 'Excellent! You got both questions right.';
+            } else {
+                feedbackElement.textContent = 'Oops, try again.';
+            }
+            
+            document.querySelector('.result-container').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Creation Form</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=number],
+        textarea {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .forgot-password {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 10;
+            margin-top: 10px;
+        }
+
+        .lesson {
+            margin-bottom: 20px;
+        }
+
+        .lesson label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .quiz-input {
+            margin-top: 10px;
+        }
+
+        .quiz-input label {
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <h1>Course Creation Form</h1>
+    <form id="course-form" action="/add_course/" method="POST">
+        {% csrf_token %}
+        <label for="course-name">Course Name:</label>
+        <input type="text" id="course-name" name="course-name" required>
+
+        <label for="course-description">Course Description:</label>
+        <textarea id="course-description" name="course-description" required></textarea>
+
+        <label for="course-price">Course Price:</label>
+        <textarea id="course-name" name="course-price" required></textarea>
+
+        <label for="num-lessons">Number of Lessons:</label>
+        <input type="number" id="num-lessons" name="num-lessons" min="1" required>
+
+        <div id="lessons-container">
+            <!-- Lessons will be added here dynamically -->
+        </div>
+
+        <button type="submit">Create Course</button>
+    </form>
+
+    <script>
+        const lessonsContainer = document.getElementById('lessons-container');
+        const numLessonsInput = document.getElementById('num-lessons');
+
+        numLessonsInput.addEventListener('input', () => {
+            const numLessons = numLessonsInput.value;
+            createLessonInputs(numLessons);
+        });
+
+        function createLessonInputs(numLessons) {
+            lessonsContainer.innerHTML = ''; // Clear previous lessons
+
+            for (let i = 1; i <= numLessons; i++) {
+                const lessonDiv = document.createElement('div');
+                lessonDiv.classList.add('lesson'); // Add a class for styling
+
+                // Lesson Name
+                const lessonNameInput = document.createElement('input');
+                lessonNameInput.type = 'text';
+                lessonNameInput.name = `lesson-name-${i}`;
+                lessonNameInput.placeholder = `Lesson ${i} Name`;
+                lessonNameInput.required = true;
+
+                // Lesson Content
+                const lessonContentInput = document.createElement('textarea');
+                lessonContentInput.name = `lesson-content-${i}`;
+                lessonContentInput.placeholder = `Lesson ${i} Content`;
+                lessonContentInput.required = true;
+
+                // Has Quiz? Checkbox
+                const hasQuizInput = document.createElement('input');
+                hasQuizInput.type = 'checkbox';
+                hasQuizInput.name = `lesson-has-quiz-${i}`;
+                hasQuizInput.id = `lesson-has-quiz-${i}`; // Add an ID for the label
+                hasQuizInput.addEventListener('change', () => {
+                    toggleQuizInputs(i, hasQuizInput.checked);
+                });
+
+                // Quiz Input Fields
+                const quizDiv = document.createElement('div');
+                quizDiv.classList.add(`quiz-input-${i}`, 'quiz-input');
+                quizDiv.style.display = 'none'; // Hide quiz inputs by default
+
+                const quizQuestionInput = document.createElement('input');
+                quizQuestionInput.type = 'text';
+                quizQuestionInput.name = `quiz-question-${i}`;
+                quizQuestionInput.placeholder = `Lesson ${i} Quiz Question`;
+
+                const quizAnswer1Input = document.createElement('input');
+                quizAnswer1Input.type = 'text';
+                quizAnswer1Input.name = `quiz-answer1-${i}`;
+                quizAnswer1Input.placeholder = `Lesson ${i} Quiz Answer 1 (Correct)`;
+
+                const quizAnswer2Input = document.createElement('input');
+                quizAnswer2Input.type = 'text';
+                quizAnswer2Input.name = `quiz-answer2-${i}`;
+                quizAnswer2Input.placeholder = `Lesson ${i} Quiz Answer 2`;
+
+                const quizAnswer3Input = document.createElement('input');
+                quizAnswer3Input.type = 'text';
+                quizAnswer3Input.name = `quiz-answer3-${i}`;
+                quizAnswer3Input.placeholder = `Lesson ${i} Quiz Answer 3`;
+
+                // Append elements to the lesson div
+                lessonDiv.appendChild(lessonNameInput);
+                lessonDiv.appendChild(lessonContentInput);
+                lessonDiv.appendChild(hasQuizInput);
+                lessonDiv.appendChild(document.createTextNode('Has Quiz?')); // Add text for the checkbox
+                lessonDiv.appendChild(quizDiv);
+
+                // Append quiz inputs to the quiz div
+                quizDiv.appendChild(quizQuestionInput);
+                quizDiv.appendChild(quizAnswer1Input);
+                quizDiv.appendChild(quizAnswer2Input);
+                quizDiv.appendChild(quizAnswer3Input);
+
+                // Append the lesson div to the container
+                lessonsContainer.appendChild(lessonDiv);
+            }
+        }
+
+        function toggleQuizInputs(lessonIndex, showQuiz) {
+            const quizInputs = document.querySelector(`.quiz-input-${lessonIndex}`);
+            if (showQuiz) {
+                quizInputs.style.display = 'block';
+            } else {
+                quizInputs.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

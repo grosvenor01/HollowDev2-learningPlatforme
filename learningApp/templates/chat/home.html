@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollow Learning Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-link, .courses-link {
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .course-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .enroll-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-course-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hollow Learning Platform</h1>
+        <a href="/profile/{{user.username}}" class="profile-link">View Profile</a>
+        {% if user.is_superuser%}
+        <a href="/dashboard/" class="profile-link">View Dashboard</a>
+        <a href="/course/" class="profile-link">View Members</a>
+        {% endif %}
+        {% if user.is_superuser or request.user.groups.all.0.name == "sub_admin" %}
+        <h2>Your Courses</h2>
+        <button class="add-course-button" onclick="navigateToPage()">Add Course</button>
+        {% for crs in courses %}
+        <div class="course-container">
+            <div class="course-title">{{crs.Title}}</div>
+            <p>{{crs.descreption}}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h2>Courses to Enroll</h2>
+        {% for crs in courses %}
+        <div class="course-container">
+            <div class="course-title">{{crs.Title}}</div>
+            <p>{{crs.descreption}}</p>
+            <p>{{crs.price}}$</p>
+            <a href="/enrollment/{{crs.id}}" class="enroll-button">Enroll</a>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <script>
+        function navigateToPage() {
+            window.location.href = '/add_course/';
+        }
+
+        
+    </script>
+</body>
+</html>

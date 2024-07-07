@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .dashboard-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .dashboard-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .dashboard-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .go-back-btn {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Dashboard</h1>
+
+        <div class="dashboard-row">
+            <div class="dashboard-card">
+                <h2>Total Users</h2>
+                <p>{{users}}</p>
+            </div>
+            <div class="dashboard-card">
+                <h2>Sub Admins</h2>
+                <p>{{sub_admins}}</p>
+            </div>
+            <div class="dashboard-card">
+                <h2>Total Enrollments</h2>
+                <p>{{enrollment}}</p>
+            </div>
+            <div class="dashboard-card">
+                <h2>Total Enrollment Price</h2>
+                <p>{{Total_price}}$</p>
+            </div>
+        </div>
+
+        <div class="dashboard-row">
+            <div class="dashboard-card">
+                <h2>Enrolled Courses</h2>
+                {% for i in enrollments %}
+                <p>
+                    - {{i.course__Title}} : {{i.num_users}}<br>
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="{% url 'home' %}" class="go-back-btn">Go Back Home</a>
+    </div>
+</body>
+</html>

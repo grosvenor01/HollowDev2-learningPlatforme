@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 30px;
+        }
+
+        .profile-info h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .profile-info p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 20px;
+        }
+
+        .profile-details h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .profile-details p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .home-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .home-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .course-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .course-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .enroll-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ profileData.user.profilePicture }}" alt="Profile Picture" class="profile-picture">
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p>{{ profile.specilality }}</p>
+            </div>
+        </div>
+        <div class="profile-details">
+            <div>
+                <h2>Email</h2>
+                <p>{{ user.email }}</p>
+            </div>
+            <div>
+                <h2>Joined</h2>
+                <p>{{ profile.joined_us }}</p>
+            </div>
+            <div>
+                <h2>Description</h2>
+                <p>{{ profile.description }}</p>
+            </div>
+        </div>
+        <div class="home-button-container">
+            <a href="{% url 'home' %}">
+                <button class="home-button">Go Back Home</button>
+            </a>
+        </div>
+
+        <h2>Enrolled Courses</h2>
+        {% for course in courses %}
+        <div class="course-container">
+            <div class="course-title">{{course.course.Title}}</div>
+            <p>{{course.course.descreption}}</p>
+            <p>progress : {{course.progress}}</p>
+            <a href="/get_lessons/{{course.course.id}}" class="enroll-button">Go To Course</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

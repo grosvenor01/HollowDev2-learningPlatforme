@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Course Management</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .sub-admin-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+
+</head>
+<body>
+  <h1>Course Management</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Enrolled Courses</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in users %}
+      {% if not i.is_superuser %}
+      <tr>
+        <td>{{i.username}}</td>
+        <td>
+          <ul>
+            <li>Introduction to Programming</li>
+            <li>Web Development Fundamentals</li>
+          </ul>
+        </td>
+        <td>
+          {% if i.groups.all.0.name == "sub_admin" %}
+          <button class="remove-sub-admin-btn" data-username="{{ i.username }}">Remove Sub-Admin</button>
+          {% else %}
+          <button class="sub-admin-btn" data-username="{{ i.username }}">Make Sub-Admin</button>
+          {%endif%}
+          
+        </td>
+      </tr>
+      {%endif%}
+    {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    document.querySelectorAll('.sub-admin-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const username = button.dataset.username;
+        try {
+          const response = await fetch('/add_permission/' + username, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            console.log('Permission added successfully!');
+          } else {
+            console.error('Error adding permission:', await response.text());
+          }
+          location.reload();
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    document.querySelectorAll('.remove-sub-admin-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const username = button.dataset.username;
+        try {
+          const response = await fetch('/remove_permission/' + username, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            console.log('Permission added successfully!');
+          } else {
+            console.error('Error adding permission:', await response.text());
+          }
+          location.reload();
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
