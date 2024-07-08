@@ -94,13 +94,13 @@
         <textarea id="course-description" name="course-description" required></textarea>
 
         <label for="course-price">Course Price:</label>
-        <textarea id="course-name" name="course-price" required></textarea>
+        <input type="number" id="course-price" name="course-price" step="0.01" required>
 
         <label for="num-lessons">Number of Lessons:</label>
         <input type="number" id="num-lessons" name="num-lessons" min="1" required>
 
         <div id="lessons-container">
-            <!-- Lessons will be added here dynamically -->
+
         </div>
 
         <button type="submit">Create Course</button>

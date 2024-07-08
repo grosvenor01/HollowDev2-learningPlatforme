@@ -123,6 +123,9 @@
         <div class="course-container">
             <div class="course-title">{{crs.Title}}</div>
             <p>{{crs.descreption}}</p>
+            {% if request.user.groups.all.0.name == "sub_admin" %}
+                <a href="/enrollment/{{crs.id}}" class="enroll-button">Enroll</a>
+            {%endif%}
         </div>
         {% endfor %}
         {% else %}

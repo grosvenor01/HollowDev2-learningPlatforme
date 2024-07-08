@@ -37,6 +37,21 @@
         .option {
             margin-bottom: 5px;
         }
+        .go-back, .go-home {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .go-back:hover, .go-home:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -55,15 +70,15 @@
                 <div class="question">
                     <h3>{{quiz_question}}</h3>
                     <div class="option">
-                        <input type="radio" name="question1" value={{quiz_answer1}}>
+                        <input type="radio" name="question1" value="{{quiz_answer1}}"">
                         <label>{{quiz_answer1}}</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="question1" value={{quiz_answer2}}>
+                        <input type="radio" name="question1" value="{{quiz_answer2}}">
                         <label>{{quiz_answer2}}</label>
                     </div>
                     <div class="option">
-                        <input type="radio" name="question1" value={{quiz_answer3}}>
+                        <input type="radio" name="question1" value="{{quiz_answer3}}">
                         <label>{{quiz_answer3}}</label>
                     </div>
                 </div>
@@ -76,7 +91,15 @@
 
             </form>
         </div>
+        <div class="go-home">
+            <button onclick="goBack()" class="go-home">Go to Lessons</button>
+        </div>
         {% endif %}
     </div>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>

@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import user_passes_test
 from .schema import schema
 import os
 from dotenv import load_dotenv
+stripe.api_key = settings.STRIPE_SECRET_KEY
 # Create your views here.
 def register(request):
     if request.method =="GET":
@@ -23,8 +24,8 @@ def register(request):
             username=request.POST.get("username")
             Email = request.POST.get("email")
             password = request.POST.get("password")
-            print(Email , password)
-            #error handeling 
+            if len(password)<8:
+                return render(request, "chat/register.html",context={"Error":"password should be minimum 8 carecters"})
             user = User.objects.create_user(username=username , password=password , email = Email)
             user.save()
             return render(request, "chat/login.html")
@@ -211,7 +212,6 @@ def access_denied(request):
 # for those who will review the code i will write a break down here : 
 # trying to create course that containe diffrent lessons and each lesson may containe a quize 
 # this function or view is only for creating (mutation) query methods are bellow
-@user_passes_test(lambda u: u.is_superuser)
 def add_course(request):
     if request.method == "GET":
         return render(request, "chat/form.html")
@@ -356,6 +356,7 @@ def add_course(request):
                             "answer2" : request.POST.get("quiz-answer2-"+str(i+1)),
                             "answer3" : request.POST.get("quiz-answer3-"+str(i+1)),
                         }
+                        print(request.POST.get("quiz-answer1-"+str(i+1)))
                         result_quiz = schema.execute(create_quiz_some , variables=variabeles3 , context=request)
                         if result_quiz.errors:
                             print(result_quiz.errors)
